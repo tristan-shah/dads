@@ -1,8 +1,9 @@
-python unsupervised_skill_learning/dads_off.py \
+CUDA_VISIBLE_DEVICES=1 python unsupervised_skill_learning/dads_off.py \
     --logdir=logs/humulum \
     --flagfile=configs/humulum_offpolicy.txt
 
 
-python unsupervised_skill_learning/dads_off.py \
-    --logdir=/Users/tristanshah/Desktop/code/dads/logs/humulum \
-    --flagfile=configs/humulum_offpolicy.txt
+CUDA_VISIBLE_DEVICES=1 python unsupervised_skill_learning/eval_humulum.py \
+    --logdir=logs/humulum_seed1 \
+    --flagfile=configs/humulum_offpolicy.txt \
+    --out_dir=logs/humulum_seed1/eval
