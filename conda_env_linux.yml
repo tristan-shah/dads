@@ -1,0 +1,20 @@
+name: dads-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+    - numpy<2.0,>=1.21
+    - tensorflow==2.12.0
+    - tensorflow-probability==0.20.0
+    - tf-agents==0.16.0
+    - tensorflow-estimator==2.12.0
+    - gym==0.23.0
+    - matplotlib>=3.5
+    - mujoco==3.7.0
+    - dm-control==1.0.39
+    - dm-env
+    - click
+    - absl-py

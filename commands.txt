@@ -1,0 +1,8 @@
+python unsupervised_skill_learning/dads_off.py \
+    --logdir=logs/humulum \
+    --flagfile=configs/humulum_offpolicy.txt
+
+
+python unsupervised_skill_learning/dads_off.py \
+    --logdir=/Users/tristanshah/Desktop/code/dads/logs/humulum \
+    --flagfile=configs/humulum_offpolicy.txt

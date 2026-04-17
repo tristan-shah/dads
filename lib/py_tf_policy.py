@@ -26,10 +26,19 @@ from tf_agents.specs import tensor_spec
 from tf_agents.trajectories import policy_step
 from tf_agents.utils import common
 from tf_agents.utils import nest_utils
-from tf_agents.utils import session_utils
+try:
+  from tf_agents.utils import session_utils
+  _SessionUser = session_utils.SessionUser
+except (ImportError, AttributeError):
+  class _SessionUser(object):
+    pass
+
+# Handle renamed base classes across tf-agents versions
+_PyPolicyBase = getattr(py_policy, 'Base', None) or py_policy.PyPolicy
+_TFPolicyBase = getattr(tf_policy, 'Base', None) or tf_policy.TFPolicy
 
 
-class PyTFPolicy(py_policy.Base, session_utils.SessionUser):
+class PyTFPolicy(_PyPolicyBase, _SessionUser):
   """Exposes a Python policy as wrapper over a TF Policy."""
 
   # TODO(damienv): currently, the initial policy state must be batched
@@ -46,7 +55,7 @@ class PyTFPolicy(py_policy.Base, session_utils.SessionUser):
       batch_size: (deprecated)
       seed: Seed to use if policy performs random actions (optional).
     """
-    if not isinstance(policy, tf_policy.Base):
+    if not isinstance(policy, _TFPolicyBase):
       logging.warning('Policy should implement tf_policy.Base')
 
     if batch_size is not None:

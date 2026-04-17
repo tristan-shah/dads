@@ -54,14 +54,20 @@ import dads_agent
 
 from envs import skill_wrapper
 from envs import video_wrapper
-from envs.gym_mujoco import ant
-from envs.gym_mujoco import half_cheetah
-from envs.gym_mujoco import humanoid
-from envs.gym_mujoco import point_mass
+from envs import humulum as humulum_env
 
-from envs import dclaw
-from envs import dkitty_redesign
-from envs import hand_block
+# mujoco_py-dependent envs — only imported if actually used
+try:
+  from envs.gym_mujoco import ant
+  from envs.gym_mujoco import half_cheetah
+  from envs.gym_mujoco import humanoid
+  from envs.gym_mujoco import point_mass
+  from envs import dclaw
+  from envs import dkitty_redesign
+  from envs import hand_block
+  _mujoco_py_available = True
+except Exception:
+  _mujoco_py_available = False
 
 from lib import py_tf_policy
 from lib import py_uniform_replay_buffer
@@ -234,6 +240,10 @@ def _normal_projection_net(action_spec, init_means_output_factor=0.1):
 
 def get_environment(env_name='point_mass'):
   global observation_omit_size
+  if env_name != 'Humulum' and not _mujoco_py_available:
+    raise ImportError(
+        f"Environment '{env_name}' requires mujoco_py which is not installed. "
+        "Use --environment=Humulum, or install mujoco_py manually.")
   if env_name == 'Ant-v1':
     env = ant.AntEnv(
         expose_all_qpos=True,
@@ -290,6 +300,11 @@ def get_environment(env_name='point_mass'):
         vertical_wrist_constraint=FLAGS.vertical_wrist_constraint,
         randomize_initial_position=bool(FLAGS.randomized_initial_distribution),
         randomize_initial_rotation=bool(FLAGS.randomized_initial_distribution))
+  elif env_name == 'Humulum':
+    # 2D humanoid standup from fixed initial state; always resets from bottom.
+    # observation_omit_size=0: policy sees full state including root_z (height).
+    observation_omit_size = 0
+    env = humulum_env.HumulumEnv()
   else:
     # note this is already wrapped, no need to wrap again
     env = suite_mujoco.load(env_name)

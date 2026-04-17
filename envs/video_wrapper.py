@@ -61,6 +61,6 @@ class VideoWrapper(Wrapper):
     return self.env.step(action)
 
   def close(self):
-    self._recorder.encoder.proc.stdin.flush()
-    self._recorder.close()
+    if self._recorder is not None:
+      self._recorder.close()
     return self.env.close()
