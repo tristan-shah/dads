@@ -48,7 +48,7 @@ FLAGS = flags.FLAGS
 # ── reuse the same flag definitions as dads_off.py ────────────────────────────
 flags.DEFINE_string('logdir', '~/tmp/dads', 'Directory where training data was saved')
 flags.DEFINE_string('environment', 'Humulum', 'Environment name (must match training)')
-flags.DEFINE_integer('max_env_steps', 300, 'Episode length in gym steps')
+flags.DEFINE_integer('max_env_steps', 1200, 'Episode length in gym steps')
 flags.DEFINE_integer('reduced_observation', 0, 'Reduced observation flag (must match training)')
 flags.DEFINE_integer('min_steps_before_resample', 5000, 'Unused in eval; must match training graph')
 flags.DEFINE_float('resample_prob', 0., 'Unused in eval; must match training graph')
