@@ -55,6 +55,9 @@ import dads_agent
 from envs import skill_wrapper
 from envs import video_wrapper
 from envs import humulum as humulum_env
+from envs import cart_pole as cart_pole_env
+from envs import double_pendulum as double_pendulum_env
+from envs import triple_pendulum as triple_pendulum_env
 
 # mujoco_py-dependent envs — only imported if actually used
 try:
@@ -240,7 +243,8 @@ def _normal_projection_net(action_spec, init_means_output_factor=0.1):
 
 def get_environment(env_name='point_mass'):
   global observation_omit_size
-  if env_name != 'Humulum' and not _mujoco_py_available:
+  _dm_control_envs = {'Humulum', 'CartPole', 'DoublePendulum', 'TriplePendulum'}
+  if env_name not in _dm_control_envs and not _mujoco_py_available:
     raise ImportError(
         f"Environment '{env_name}' requires mujoco_py which is not installed. "
         "Use --environment=Humulum, or install mujoco_py manually.")
@@ -305,6 +309,18 @@ def get_environment(env_name='point_mass'):
     # observation_omit_size=0: policy sees full state including root_z (height).
     observation_omit_size = 0
     env = humulum_env.HumulumEnv()
+  elif env_name == 'CartPole':
+    # Cart-pole swing-up from hanging state; obs uses sin/cos for angle wrapping.
+    observation_omit_size = 0
+    env = cart_pole_env.CartPoleEnv()
+  elif env_name == 'DoublePendulum':
+    # Double-pendulum swing-up from hanging state; obs uses sin/cos per angle.
+    observation_omit_size = 0
+    env = double_pendulum_env.DoublePendulumEnv()
+  elif env_name == 'TriplePendulum':
+    # Triple-pendulum swing-up from hanging state; obs uses sin/cos per angle.
+    observation_omit_size = 0
+    env = triple_pendulum_env.TriplePendulumEnv()
   else:
     # note this is already wrapped, no need to wrap again
     env = suite_mujoco.load(env_name)
