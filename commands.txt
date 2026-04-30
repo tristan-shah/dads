@@ -14,3 +14,22 @@ CUDA_VISIBLE_DEVICES="" python unsupervised_skill_learning/eval_humulum.py \
     --logdir=logs/humulum \
     --flagfile=configs/humulum_offpolicy.txt \
     --out_dir=logs/humulum/eval
+
+
+# Cart Pole
+python unsupervised_skill_learning/eval_cart_pole.py \
+    --logdir=logs/cart_pole \
+    --flagfile=configs/cart_pole_offpolicy.txt \
+    --out_dir=logs/cart_pole/eval
+
+# Double Pendulum
+python unsupervised_skill_learning/eval_double_pendulum.py \
+    --logdir=logs/double_pendulum \
+    --flagfile=configs/double_pendulum_offpolicy.txt \
+    --out_dir=logs/double_pendulum/eval
+
+# Triple Pendulum
+python unsupervised_skill_learning/eval_triple_pendulum.py \
+    --logdir=logs/triple_pendulum \
+    --flagfile=configs/triple_pendulum_offpolicy.txt \
+    --out_dir=logs/triple_pendulum/eval

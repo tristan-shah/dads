@@ -291,6 +291,52 @@ def main(_):
         np.save(bs_npy, arr)
         print(f'Saved trajectories {arr.shape} → {bs_npy}')
 
+        max_len = max(len(h) for h in skill_heights.values())
+        padded = [np.pad(h, (0, max_len - len(h)), constant_values=h[-1])
+                  for h in skill_heights.values()]
+        padded_arr = np.array(padded)
+        mean_heights = padded_arr.mean(axis=0)
+        std_heights = padded_arr.std(axis=0)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5), sharey=True)
+        fig.suptitle(f'DADS DoublePendulum — step {step}')
+        ax1.plot(best_heights, color='tab:blue')
+        ax1.set_title(f'Best skill (idx {best_idx}, mean={best_heights.mean():.3f} m)')
+        ax1.set_xlabel('Step')
+        ax1.set_ylabel('Bob2 tip height (m)')
+        steps = np.arange(max_len)
+        ax2.plot(steps, mean_heights, color='tab:orange', label='mean')
+        ax2.fill_between(steps, mean_heights - std_heights,
+                         mean_heights + std_heights,
+                         color='tab:orange', alpha=0.3, label='±1 std')
+        ax2.set_title(f'Average over {FLAGS.num_eval_skills} skills')
+        ax2.set_xlabel('Step')
+        ax2.legend()
+        fig.tight_layout()
+        fig.savefig(os.path.join(out_dir, 'tip_height.png'), dpi=150)
+        np.save(os.path.join(out_dir, 'tip_height.npy'), best_heights)
+        print(f'Saved tip-height plot → {out_dir}/tip_height.png')
+        plt.close(fig)
+
+        mean_h = arr.mean(axis=0)
+        std_h = arr.std(axis=0)
+        ep_steps = np.arange(arr.shape[1])
+        fig, ax = plt.subplots(figsize=(9, 5))
+        cmap = plt.get_cmap('tab10')
+        for i, h in enumerate(trajectories):
+            ax.plot(np.arange(len(h)), h, color=cmap(i), alpha=0.7, label=f'seed {i}')
+        ax.plot(ep_steps, mean_h, color='k', linewidth=2, label='mean')
+        ax.fill_between(ep_steps, mean_h - std_h, mean_h + std_h,
+                        color='k', alpha=0.15, label='±1 std')
+        ax.set_title(f'DADS DoublePendulum step {step} — best skill {best_idx} '
+                     f'({FLAGS.num_seeds} stochastic seeds)')
+        ax.set_xlabel('Step')
+        ax.set_ylabel('Bob2 tip height (m)')
+        ax.legend(loc='lower right', fontsize=8)
+        fig.tight_layout()
+        fig.savefig(os.path.join(out_dir, 'best_skill_seeds.png'), dpi=150)
+        plt.close(fig)
+
 
 if __name__ == '__main__':
     app.run(main)
