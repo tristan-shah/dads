@@ -1,12 +1,12 @@
 <mujoco model="triple_pendulum_no_contact">
   <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
   
-  <option integrator="implicitfast" timestep="0.01"/>
+  <option integrator="RK4" timestep="0.01"/>
 
   <default>
     <joint armature="0.01" damping="1" limited="false"/>
     <geom conaffinity="0" contype="0" margin="0.001" material="geom" rgba="0.8 0.6 .4 1" solimp=".8 .8 .01" solref=".02 1"/>
-    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="10"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="25"/>
   </default>
 
   <asset>
