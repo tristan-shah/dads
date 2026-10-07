@@ -8,7 +8,7 @@ Usage:
         --logdir=/path/to/logdir \\
         --flagfile=configs/humulum_offpolicy.txt \\
         [--num_eval_skills=20] \\
-        [--num_seeds=8] \\
+        [--num_seeds=10] \\
         [--out_dir=./eval_humulum]
 """
 
@@ -114,7 +114,7 @@ flags.DEFINE_integer('top_primitives', 5, 'Unused in eval')
 # ── eval-specific flags ───────────────────────────────────────────────────────
 flags.DEFINE_integer('num_eval_skills', 20,
                      'Number of random skills to evaluate (cont_uniform prior)')
-flags.DEFINE_integer('num_seeds', 8,
+flags.DEFINE_integer('num_seeds', 10,
                      'Number of stochastic seeds for the best-skill plot')
 flags.DEFINE_string('out_dir', './eval_humulum',
                     'Directory to save output plots and npy files')

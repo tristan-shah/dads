@@ -9,7 +9,7 @@ Usage:
         --logdir=/path/to/logdir \\
         --flagfile=configs/cart_pole_offpolicy.txt \\
         [--num_eval_skills=20] \\
-        [--num_seeds=8] \\
+        [--num_seeds=10] \\
         [--out_dir=./eval_cart_pole]
 """
 
@@ -112,7 +112,7 @@ flags.DEFINE_float('smoothing_beta', 0.9, 'Unused in eval')
 flags.DEFINE_integer('top_primitives', 5, 'Unused in eval')
 
 flags.DEFINE_integer('num_eval_skills', 20, 'Number of random skills to evaluate')
-flags.DEFINE_integer('num_seeds', 8, 'Number of stochastic seeds for the best-skill plot')
+flags.DEFINE_integer('num_seeds', 10, 'Number of stochastic seeds for the best-skill plot')
 flags.DEFINE_string('out_dir', './eval_cart_pole', 'Directory to save output plots and npy files')
 flags.DEFINE_integer('eval_seed', 42, 'RNG seed for sampling eval skills')
 
